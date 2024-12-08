@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration</title>
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: url('https://www.anonymoushackers.net/wp-content/uploads/2024/04/DALL%C2%B7E-2024-04-20-19.00.56-A-cinematic-scene-depicting-an-anonymous-hacker-now-featuring-a-distinctive-Guy-Fawkes-mask-often-associated-with-Anonymous-resting-on-the-desk-b.webp') no-repeat center center/cover;
+      color: #000;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 0; /* Add space at the top and bottom */
+    }
+
+    .container {
+      background-color: white;
+      width: 400px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+
+    input, select, button {
+      margin-bottom: 15px;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #1E90FF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    .success {
+      color: green;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Registration</h1>
+    <form id="registration-form">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+      <label for="profession">Profession</label>
+      <select id="profession" name="profession" required>
+        <option value="" disabled selected>Select your profession</option>
+        <option value="CBI">CBI</option>
+        <option value="FBI">FBI</option>
+        <option value="RAW">Raw</option>
+        <option value=""></option>
+        <option value="other">Others</option>
+
+      </select>
+
+      <label for="mobile">Mobile no</label>
+      <input type="tel" id="mobile" name="mobile_number" placeholder="Enter your mobile number" required>
+
+      <label for="aadhaar">Aadhaar</label>
+      <input type="text" id="aadhaar" name="aadhar_id" placeholder="Enter Aadhaar number" required>
+
+      <label for="id">ID no</label>
+      <input type="text" id="id" name="id_no" placeholder="Enter ID number" required>
+
+      <label for="password">Create Password</label>
+      <input type="password" id="password" name="create_password" placeholder="Create your password" required>
+
+      <label for="confirm-password">Confirm Password</label>
+      <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirm your password" required>
+
+      <div id="message" class="error"></div>
+
+      <button type="submit">Register</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('registration-form');
+    const messageDiv = document.getElementById('message');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData);
+
+      const password = data.create_password;
+      const confirmPassword = data.confirm_password;
+
+      // Validate Password Match
+      if (password !== confirmPassword) {
+        messageDiv.textContent = 'Passwords do not match.';
+        return;
+      }
+
+      messageDiv.textContent = ''; // Clear previous messages
+
+      try {
+        const response = await fetch("http://localhost:3000/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.text();
+
+        if (response.ok) {
+          messageDiv.className = 'success';
+          messageDiv.textContent = 'Registration successful. Redirecting...';
+          setTimeout(() => {
+            window.location.href = 'detect.html'; // Redirect on success
+          }, 2000);
+        } else {
+          messageDiv.className = 'error';
+          messageDiv.textContent = result;
+        }
+      } catch (err) {
+        messageDiv.className = 'error';
+        messageDiv.textContent = 'An error occurred. Please try again.';
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>

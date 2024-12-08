@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Detection</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #121212;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: #1e1e1e;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #f0f0f0;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        input[type="file"],
+        select,
+        button,
+        a {
+            margin-top: 10px;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        input[type="file"] {
+            background: #f0f0f0;
+            color: #000;
+        }
+
+        button,
+        a {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        button:hover,
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .real {
+            background-color: #4caf50;
+        }
+
+        .fake {
+            background-color: #f44336;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        table {
+            margin: 20px auto;
+            width: 100%;
+            border-collapse: collapse;
+            color: #ffffff;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ffffff;
+        }
+
+        .navigation-buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .navigation-buttons a {
+            flex: 1;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Step 1: File Upload -->
+        <div id="upload-page">
+            <h2>Upload Media</h2>
+            <label for="media-type">Select Media Type</label>
+            <select id="media-type">
+                <option value="video">Video</option>
+            </select>
+            <label for="file-input">Choose a File</label>
+            <input type="file" id="file-input" accept="video/*">
+            <button onclick="processDetection()">Test for Deepfake</button>
+        </div>
+
+        <!-- Step 2: Deepfake Detection Result -->
+        <div id="detection-page" class="hidden">
+            <h2>Deepfake Detection Result</h2>
+            <div id="result" class="result"></div>
+            <button onclick="showAccuracy()">View Accuracy</button>
+        </div>
+
+        <!-- Step 3: Detection Accuracy -->
+        <div id="accuracy-page" class="hidden">
+            <h2>Accuracy Percentage</h2>
+            <table>
+                <tr>
+                    <th>Media Type</th>
+                    <th>Detection Accuracy</th>
+                </tr>
+                <tr>
+                    <td id="media-type-result"></td>
+                    <td id="accuracy-result"></td>
+                </tr>
+            </table>
+            <p>Analysis completed in 0.8 seconds per frame.</p>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="navigation-buttons">
+            <a href="#" onclick="fetchReport()">Reports</a>
+            <a href="homepage.html">Home</a>
+        </div>
+    </div>
+
+    <script>
+        // Simulated detection results
+        const detectionResults = {
+            real: "The media is authentic.",
+            fake: "The media is a deepfake."
+        };
+
+        // Simulated accuracy percentages
+        const accuracyResults = {
+            video: "85.4%"
+        };
+
+        function processDetection() {
+            const fileInput = document.getElementById("file-input");
+            const mediaType = document.getElementById("media-type").value;
+
+            if (!fileInput.files.length) {
+                alert("Please upload a file first.");
+                return;
+            }
+
+            const uploadedFile = fileInput.files[0];
+            const validType = mediaType === "video" ? uploadedFile.type.startsWith("video/") : uploadedFile.type.startsWith("image/");
+
+            if (!validType) {
+                alert(`Please upload a valid ${mediaType} file.`);
+                return;
+            }
+
+            // Simulate detection result
+            const isFake = Math.random() > 0.5; // Randomly determine if it's real or fake
+            const resultMessage = isFake ? detectionResults.fake : detectionResults.real;
+            const resultClass = isFake ? "fake" : "real";
+
+            // Show detection result
+            document.getElementById("upload-page").classList.add("hidden");
+            document.getElementById("detection-page").classList.remove("hidden");
+            const resultDiv = document.getElementById("result");
+            resultDiv.textContent = resultMessage;
+            resultDiv.className = `result ${resultClass}`;
+        }
+
+        function showAccuracy() {
+            const mediaType = document.getElementById("media-type").value;
+
+            // Display accuracy
+            document.getElementById("detection-page").classList.add("hidden");
+            document.getElementById("accuracy-page").classList.remove("hidden");
+            document.getElementById("media-type-result").textContent = mediaType.charAt(0).toUpperCase() + mediaType.slice(1);
+            document.getElementById("accuracy-result").textContent = accuracyResults[mediaType];
+        }
+
+        // Fetch metadata and handle response
+        function fetchReport() {
+            const fileInput = document.getElementById("file-input");
+            if (!fileInput.files.length) {
+                alert("Please upload a video first.");
+                return;
+            }
+
+            const uploadedFile = fileInput.files[0];
+            const formData = new FormData();
+            formData.append("video", uploadedFile);
+
+            fetch('http://localhost:3000/getMetadata', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    displayMetadata(data.metadata);
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching metadata:", error);
+                alert("An error occurred while fetching the report.");
+            });
+        }
+
+        // Display metadata in a new window
+        function displayMetadata(metadata) {
+            const metadataWindow = window.open("", "Video Metadata", "width=600,height=400");
+            metadataWindow.document.write("<h1>Video Metadata</h1>");
+            metadataWindow.document.write("<pre>" + JSON.stringify(metadata, null, 2) + "</pre>");
+        }
+    </script>
+</body>
+
+</html>

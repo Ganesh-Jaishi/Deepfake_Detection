@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>True Sight - About & Contact</title>
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: url('https://i.pinimg.com/736x/30/96/9b/30969bbae6bb8931b943369fec8ab429.jpg') no-repeat center center fixed; 
+      background-size: cover;
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: rgba(10, 10, 10, 0.85); /* Semi-transparent dark background */
+      border: 2px solid #002143; /* Blue border */
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+    }
+
+    label {
+      margin-bottom: 5px;
+      font-size: 1rem;
+    }
+
+    input, textarea {
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #002143;
+      border-radius: 5px;
+      background-color: #1A1A1A; /* Darker background for inputs */
+      color: white;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #002143; /* Button color */
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #003366; /* Darker shade on hover */
+      transform: translateY(-3px);
+    }
+
+    .home-btn {
+      margin-bottom: 20px;
+      display: inline-block;
+      text-decoration: none;
+      padding: 10px 20px;
+      background-color: #002143;
+      color: white;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .home-btn:hover {
+      background-color: #003366;
+      transform: translateY(-3px);
+    }
+
+    .section {
+      margin-bottom: 40px; /* Space between sections */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Home Button -->
+    <a href="homepage.html" class="home-btn">Home</a>
+
+    <div class="section">
+      <div class="logo"></div>
+      <h1>About Us</h1>
+      <p>
+        At True Sight, we are dedicated to safeguarding trust in the digital age. With the rise of artificial intelligence and its incredible capabilities, the threat of manipulated media—deepfakes—has grown exponentially. 
+        Our mission is to empower individuals, organizations, and governments with cutting-edge tools to detect and mitigate the risks posed by deceptive content.
+      </p>
+      <h2>What we provide</h2>
+      <p>
+        We specialize in providing advanced and highly accurate detection services for deepfake face swaps in both images and videos. 
+        Our cutting-edge technology ensures reliable identification of manipulated content, empowering individuals, businesses, and organizations to safeguard their integrity and make informed decisions. 
+      </p>
+    </div>
+
+    <div class="section">
+      <div class="logo"></div>
+      <h1>Contact Us</h1>
+      <p>If you have any questions, feel free to reach out to us through the form below.</p>
+      
+      <form action="#" method="POST">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

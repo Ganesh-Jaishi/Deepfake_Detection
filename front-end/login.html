@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url('https://sectricity.com/wp-content/uploads/2023/05/Hacker-Cyber-Security-Internet-Sectricity.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px 30px;
+            border-radius: 10px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-container h2 {
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .login-container input[type="text"]:focus,
+        .login-container input[type="password"]:focus {
+            outline: none;
+            border: 2px solid #007bff;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #ffffff;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .login-container .error,
+        .login-container .success {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .login-container .error {
+            color: red;
+        }
+
+        .login-container .success {
+            color: green;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .footer-links {
+            margin-top: 15px;
+            font-size: 14px;
+            color: white;
+        }
+
+        .footer-links a {
+            color: #007bff;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .home-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #ffffff;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .home-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <input type="text" name="mobile_number" placeholder="Mobile No" required>
+            <input type="password" name="enter_password" placeholder="Enter password" required>
+            <button type="submit">Login</button>
+            <div id="message"></div>
+        </form>
+        
+        <!-- Home Button -->
+        <a href="homepage.html"><button class="home-button">Home</button></a>
+
+        <div class="footer-links">
+            <span>Not a registered user? </span><a href="registration.html">Register Now</a>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("login-form");
+        const messageDiv = document.getElementById("message");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+
+            // Validation for mobile number format
+            const mobileNumber = data.mobile_number;
+
+            if (!/^\d{10}$/.test(mobileNumber)) {
+                messageDiv.className = "error";
+                messageDiv.textContent = "Please enter a valid 10-digit mobile number.";
+                return;
+            }
+
+            try {
+                const response = await fetch("http://localhost:3000/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.text();
+
+                if (response.ok) {
+                    messageDiv.className = "success";
+                    messageDiv.textContent = "Login successful! Redirecting...";
+
+                    // Redirect to detect.html after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = "detect.html";
+                    }, 2000);
+                } else {
+                    messageDiv.className = "error";
+                    messageDiv.textContent = result;
+                }
+            } catch (err) {
+                messageDiv.className = "error";
+                messageDiv.textContent = "An error occurred. Please try again.";
+                console.error(err);
+            }
+        });
+    </script>
+</body>
+</html>
